@@ -13,11 +13,56 @@ namespace Library_Managment_System
         private string Author;
         private bool IsAvailable = true;
 
+        
 
-        public Book()
+
+        public Book(int id , string title , string author,bool availabilty)
         {
+            Id=id;
+            if (title == "" || title == null)
+            {
+                Console.WriteLine("the title can't be emty or null");
+            }
+            else
+            {
+                Title = title;
+            }
+            if (author == "" || author == null)
+            {
+                Console.WriteLine("the auther can't be emty or null");
+            }
+            else
+            {
+                Author = author;
+            }
+            IsAvailable =availabilty;
+
              
 
+        }
+
+        public int GetID()
+        {
+            return Id;
+        }
+        public string GetTitle()
+        {
+            return Title;
+
+        }
+
+        public string GetAuthor()
+        {
+            return Author;
+        }
+        public bool GetAvailabilty()
+        {
+            return IsAvailable;
+        }
+
+        public override string ToString()
+        {
+            return $"ID: {Id}\n Title: {Title}\n Author: {Author}\n Availablity:{IsAvailable}";
         }
     }
 }
