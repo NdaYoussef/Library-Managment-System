@@ -21,7 +21,7 @@ namespace Library_Managment_System
             Id=id;
             if (title == "" || title == null)
             {
-                Console.WriteLine("the title can't be emty or null");
+                Console.WriteLine("The Title can't be empty or null");
             }
             else
             {
@@ -29,7 +29,7 @@ namespace Library_Managment_System
             }
             if (author == "" || author == null)
             {
-                Console.WriteLine("the auther can't be emty or null");
+                Console.WriteLine("The Author can't be empty or null");
             }
             else
             {
@@ -63,6 +63,14 @@ namespace Library_Managment_System
         public override string ToString()
         {
             return $"ID: {Id}\n Title: {Title}\n Author: {Author}\n Availablity:{IsAvailable}";
+        }
+        public void Borrow()
+        {
+            IsAvailable = false;
+        }
+        public void Return()
+        {
+            IsAvailable =true;
         }
     }
 }
