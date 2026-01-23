@@ -59,15 +59,18 @@ namespace Library_Managment_System
         }
         public void Borrow()
         {
-            if(!IsAvailable)
+            if (!IsAvailable)
             {
                 Console.WriteLine($"Book: {Title} is already borrowed");
             }
             IsAvailable = false;
+
+            Console.WriteLine("Book borrowed successfully!");
         }
         public void Return()
         {
-            IsAvailable =true;
+            IsAvailable = true;
+            Console.WriteLine("Book returned sucessfully");
         }
 
 
