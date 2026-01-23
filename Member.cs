@@ -9,8 +9,6 @@ namespace Library_Managment_System
 {
     internal class Member
     {
-        public int Id;
-        public string Name;
         public int id;
         public string name;
         public Book[] BorrowedBooks;
@@ -18,7 +16,7 @@ namespace Library_Managment_System
 
 
 
-        public Member (int id,string name,int maxBooks)
+        public Member(int id, string name, int maxBooks)
         {
             
             this.id = id;
@@ -53,8 +51,6 @@ namespace Library_Managment_System
                         BorrowedBooks[j] = BorrowedBooks[j + 1];
                     }
 
-        public Book[] BorrowedBooks;
-        public int BorrowedCount;
                     BorrowedBooks[borrowedCount - 1] = null;
                     borrowedCount--;
                     Console.WriteLine("book return successfully");
@@ -62,16 +58,15 @@ namespace Library_Managment_System
             }
 
             Console.WriteLine("this book not found");
-            return false;   
+            return false;
         }
 
 
         public override string ToString()
         {
-           
+
             string info = $"Member ID: {id}, Name: {name}\nBorrowed Books:\n";
 
-        public Member(int id, string name)
             if (borrowedCount == 0)
             {
                 info += "no borrowed book yet";
@@ -79,15 +74,11 @@ namespace Library_Managment_System
             else
             {
                 for (int i = 0; i < borrowedCount; i++)
-        {
-            Id = id;
-            Name = name;
+                {
                     info += $"- {BorrowedBooks[i].GetTitle()}\n";
                 }
             }
 
-            BorrowedBooks = new Book[5]; // أقصى عدد استعارة
-            BorrowedCount = 0;
             return info;
         }
     }
