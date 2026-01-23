@@ -70,7 +70,7 @@ namespace Library_Managment_System
         public void Return()
         {
             IsAvailable = true;
-            Console.WriteLine("Book returned sucessfully");
+            Console.WriteLine("Book returned successfully");
         }
 
 
