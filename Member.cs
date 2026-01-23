@@ -18,7 +18,7 @@ namespace Library_Managment_System
 
         public Member (int id,string name,int maxBooks)
         {
-            add
+            
             this.id = id;
             this.name = name;
             BorrowedBooks = new Book[maxBooks];
@@ -58,6 +58,7 @@ namespace Library_Managment_System
             }
 
             Console.WriteLine("this book not found");
+            return false;   
         }
 
 
@@ -74,7 +75,7 @@ namespace Library_Managment_System
             {
                 for (int i = 0; i < borrowedCount; i++)
                 {
-                    info += $"- {BorrowedBooks[i].Title}\n";
+                    info += $"- {BorrowedBooks[i].GetTitle()}\n";
                 }
             }
 
