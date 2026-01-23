@@ -1,4 +1,6 @@
-﻿namespace Library_Managment_System
+﻿using System.Reflection.Metadata;
+
+namespace Library_Managment_System
 {
     internal class Program
     {
@@ -33,6 +35,13 @@
                 }
 
         }
+
+
+            Member member = new Member(1, "Ahmed",10);
+            member.BorrowBook(bookA);
+            member.BorrowBook(bookB);
+
+            Console.WriteLine(member);
 
         }
     }
