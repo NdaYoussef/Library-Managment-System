@@ -84,7 +84,7 @@
                     case "3":
                         int mid = ReadOnlyInt("Member ID: ");
                         string name = ReadOnlyString("Name: ");
-                        library.AddMember(mid, name);
+                        library.AddMember(new Member(mid,name));
                         break;
 
                     case "4":

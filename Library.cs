@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -52,12 +53,12 @@ namespace Library_Managment_System
                 Console.WriteLine("Book not found.");
                 return;
             }
+            Console.WriteLine($"Book {_book[index].Title} removed successfully.");
             for (int i = index; i < _bookcount - 1; i++)
             {
                 _book[i] = _book[i + 1];
             }
             _bookcount--;
-            Console.WriteLine("Book removed successfully.");
         }
         public void ListBooks()
         {
@@ -72,38 +73,53 @@ namespace Library_Managment_System
             }
         }
 
-        public void AddMember(int id, string name)
-        {
-            _member[_membercount] = new Member(id, name);
-            _membercount++;
-            Console.WriteLine($"Member '{name}' added successfully.");
-        }
-
-        private int FindMemberIndex(int id)
+        public void AddMember(Member m)
         {
             for (int i = 0; i < _membercount; i++)
-                if (_member[i].Id == id)
-                    return i;
-
-            return -1;
+            {
+                if (_member[i].Id == m.Id)
+                {
+                    Console.WriteLine($"Member With ID {_member[i].Id} already Exists!");
+                    return;
+                }
+            }
+            _member[_membercount] = m;
+            _membercount++;
+            Console.WriteLine($"Member '{m.Name}' added successfully.");
         }
+
+        //private int FindMemberIndex(int id)
+        //{
+        //    for (int i = 0; i < _membercount; i++)
+        //        if (_member[i].Id == id)
+        //            return i;
+
+        //    return -1;
+        //}
 
         public void RemoveMember(int id)
         {
-            int index = FindMemberIndex(id);
-            if (index == -1)
+            //int index = -1;
+
+            for (int i = 0; i < _membercount; i++)
             {
+                if (_member[i].Id == id && _member[i].BorrowedCount == 0)
+                {
+                    Console.WriteLine($"Member {_member[i].Name} removed successfully.");
+                    for (int index = i; index < _membercount -1; index++)
+                    {
+                        _member[index] = null;
+                    }
+                    _membercount--;
+                    return;
+                }
+                else if (_member[i].BorrowedCount > 0)
+                {
+                    Console.WriteLine($"Member '{_member[i].Name}' has Borrowed books CanNot Remove !");
+                }
+            }
                 Console.WriteLine("Member not found.");
-                return;
-            }
 
-            for (int i = index; i < _membercount - 1; i++)
-            {
-                _member[i] = _member[i + 1];
-            }
-
-            _membercount--;
-            Console.WriteLine("Member removed successfully.");
         }
 
         public void ListMember()
@@ -113,8 +129,13 @@ namespace Library_Managment_System
                 if (M != null)
                 {
                 Console.WriteLine($"Member ID {M.Id} : {M.Name} and has {M.BorrowedCount} Books");
+                
                 }
             }
+               
+               
+              
+               
         }
 
         public void BorrowBook(int bookid, int memberId)
