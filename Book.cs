@@ -13,32 +13,26 @@ namespace Library_Managment_System
         private string Author;
         private bool IsAvailable = true;
 
-        
-
-
         public Book(int id , string title , string author,bool availabilty)
         {
-            Id=id;
-            if (title == "" || title == null)
+            Id = id;
+            if (string.IsNullOrEmpty(title))
             {
                 Console.WriteLine("The Title can't be empty or null");
+
             }
-            else
-            {
-                Title = title;
-            }
-            if (author == "" || author == null)
+
+            Title = title;
+
+
+            if (string.IsNullOrEmpty(author))
             {
                 Console.WriteLine("The Author can't be empty or null");
+              
             }
-            else
-            {
-                Author = author;
-            }
-            IsAvailable =availabilty;
+            Author = author;
 
-             
-
+            IsAvailable = availabilty;
         }
 
         public int GetID()
@@ -50,7 +44,6 @@ namespace Library_Managment_System
             return Title;
 
         }
-
         public string GetAuthor()
         {
             return Author;
@@ -66,11 +59,18 @@ namespace Library_Managment_System
         }
         public void Borrow()
         {
+            if(!IsAvailable)
+            {
+                Console.WriteLine($"Book: {Title} is already borrowed");
+            }
             IsAvailable = false;
         }
         public void Return()
         {
             IsAvailable =true;
         }
+
+
+      
     }
 }
