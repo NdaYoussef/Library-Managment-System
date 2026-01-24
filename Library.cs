@@ -160,11 +160,16 @@ namespace Library_Managment_System
                 return;
             }
 
-            if (member.ReturnBook(book))
-            {
+            bool returned = member.ReturnBook(book);
 
-                book.Return();
+            if (!returned)
+            {
+                Console.WriteLine("This member didn't borrow this book.");
+                return;
             }
+
+            book.Return();
+            Console.WriteLine($"{member.Name} returned '{book.GetTitle()}'.");
         }
 
         // ================== HELPERS ==================

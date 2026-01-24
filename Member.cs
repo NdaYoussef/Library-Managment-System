@@ -73,12 +73,12 @@ namespace Library_Managment_System
                     _borrowedBooks[_borrowedCount - 1] = null;
                     _borrowedCount--;
 
-                    Console.WriteLine("Book returned successfully");
+                    //Console.WriteLine("Book returned successfully");
                     return true;
                 }
             }
 
-            Console.WriteLine("This book not found");
+            //Console.WriteLine("This book not found");
             return false;
         }
 
