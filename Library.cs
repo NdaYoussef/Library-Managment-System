@@ -12,13 +12,13 @@ namespace Library_Managment_System
         private Book[] _book;
         private int _bookcount;
         private Member[] _member;
-        private int _membercount;
+        private int _membercount = 0;
         public Library()
         {
             _book = new Book[50];
             _member = new Member[50];
             _bookcount = 0;
-            _membercount = 0;
+            
         }
         public void AddBook(Book book)
         {
@@ -113,14 +113,15 @@ namespace Library_Managment_System
 
             for (int i = 0; i < _membercount; i++)
             {
-                if (_member[i].Id == id && _member[i].BorrowedCount == 0)
+                if (_member[i].Id == id && _member[i] != null && _member[i].BorrowedCount == 0)
                 {
                     Console.WriteLine($"Member {_member[i].Name} removed successfully.");
                     for (int index = i; index < _membercount -1; index++)
                     {
-                        _member[index] = null;
+                        _member[index] = _member[index + 1];
                     }
                     _membercount--;
+                    _member[_membercount] = null;
                     return;
                 }
                 else if (_member[i].BorrowedCount > 0)
@@ -142,7 +143,7 @@ namespace Library_Managment_System
                 Console.WriteLine($"Member ID {M.Id} : {M.Name} and has {M.BorrowedCount} Books ");
                     foreach (Book i in M.BorrowedBooks)
                     {
-                        if (i != null)
+                        if (i != null && M.BorrowedCount != 0)
                         {
                         Console.WriteLine(i.Title);
                             
@@ -188,7 +189,7 @@ namespace Library_Managment_System
             int index = -1;
             for (int i = 0; i < member.BorrowedCount; i++)
             {
-                if (member.BorrowedBooks[i].Id == bookid)
+                if (member.BorrowedBooks[i].Id == bookid && member.BorrowedBooks[i] != null)
                 {
                     index = i;
                     break;
@@ -204,7 +205,7 @@ namespace Library_Managment_System
 
             for (int i = index; i < member.BorrowedCount - 1; i++)
             {
-                member.BorrowedBooks[i] = member.BorrowedBooks[i + 1];
+                member.BorrowedBooks[i] = null;
             }
 
             member.BorrowedCount--;
