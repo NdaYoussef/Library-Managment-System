@@ -16,22 +16,21 @@ namespace Library_Managment_System
         public Book(int id , string title , string author,bool availabilty)
         {
             Id = id;
+            if (string.IsNullOrWhiteSpace(title) )
+                Console.WriteLine("The Title can't be empty or null");
             if (string.IsNullOrEmpty(title))
-            {
                 Console.WriteLine("The Title can't be empty or null");
 
-            }
-
-            Title = title;
 
 
             if (string.IsNullOrEmpty(author))
-            {
                 Console.WriteLine("The Author can't be empty or null");
-              
-            }
-            Author = author;
+            if (string.IsNullOrWhiteSpace(author))
+                Console.WriteLine("The Author can't be empty or null");
 
+
+            Title = title;
+            Author = author;
             IsAvailable = availabilty;
         }
 
@@ -65,12 +64,12 @@ namespace Library_Managment_System
             }
             IsAvailable = false;
 
-            Console.WriteLine("Book borrowed successfully!");
+          //  Console.WriteLine("Book borrowed successfully!");
         }
         public void Return()
         {
             IsAvailable = true;
-            Console.WriteLine("Book returned successfully");
+          //  Console.WriteLine("Book returned successfully");
         }
 
 
