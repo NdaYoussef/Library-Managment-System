@@ -129,9 +129,21 @@ namespace Library_Managment_System
             Book book = FindBook(bookId);
             Member member = FindMember(memberId);
 
-            if (book == null || member == null)
+            if (book == null && member == null)
             {
-                Console.WriteLine("Book or Member not found.");
+                Console.WriteLine("Book and Member not found.");
+                return;
+            }
+
+            if (member == null)
+            {
+                Console.WriteLine("Member not found.");
+                return;
+            }
+
+            if (book == null)
+            {
+                Console.WriteLine("Book not found.");
                 return;
             }
 
