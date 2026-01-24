@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,188 +9,198 @@ namespace Library_Managment_System
 {
     internal class Library
     {
-        private Book[] _book;
-        private int _bookcount;
-       private Member[] _member;
-        private int _membercount;
+        private Book[] _books;
+        private int _bookCount;
+        private Member[] _member;
+        private int _memberCount ;
         public Library()
         {
-            _book = new Book[50];
+            _books = new Book[50];
             _member = new Member[50];
-            _bookcount = 0;
-            _membercount = 0;
+            _bookCount = 0;
+            _memberCount = 0;
+
         }
+
+        // ================== BOOKS ==================
         public void AddBook(Book book)
         {
-            for (int i = 0; i < _bookcount; i++)
+           if(FindBook(book.GetID()) != null)
             {
-                if (_book[i].GetID == book.GetID)
-                {
-                    Console.WriteLine($"Book With ID {_book[i].GetID} already Exists!");
-                    return;
-                }
+                Console.WriteLine($"Book with ID {book.GetID()} already exists.");
+                return;
             }
-        _book[_bookcount] = book;
-        _bookcount++;
-        Console.WriteLine($"Book '{book.GetTitle()}' added successfully.");
+
+            _books[_bookCount++] = book;
+            Console.WriteLine($"Book '{book.GetTitle()}' added successfully.");
         }
+
+
         public void RemoveBook(int id)
         {
-            int index = -1;
-            for (int i = 0; i < _bookcount; i++)
-            {
-                if (_book[i].GetID() == id)
-                {
-                    index = i;
-                }
-                else
-                {
-                    index = -1;
-                }
-            }
+            int index = FindBookIndex(id);
+
             if (index == -1)
             {
                 Console.WriteLine("Book not found.");
                 return;
             }
-            for (int i = index; i < _bookcount - 1; i++)
+
+            if (!_books[index].GetAvailabilty())
             {
-                _book[i] = _book[i + 1];
+                Console.WriteLine("Book is currently borrowed and can't be removed.");
+                return;
             }
-            _bookcount--;
+
+            for (int i = index; i < _bookCount - 1; i++)
+                _books[i] = _books[i + 1];
+
+            _books[--_bookCount] = null;
             Console.WriteLine("Book removed successfully.");
         }
+
         public void ListBooks()
         {
-            if (_bookcount == 0)
+            if (_bookCount == 0)
             {
                 Console.WriteLine("No books in library.");
                 return;
             }
-            for (int i = 0; i < _bookcount; i++)
+
+            for (int i = 0; i < _bookCount; i++)
+                Console.WriteLine(_books[i]);
+        }
+        // ================== MEMBERS ==================
+
+        public void AddMember(Member member)
+        {
+            if (FindMember(member.Id) != null)
             {
-                Console.WriteLine($"ID: {_book[i].GetID}, Title: {_book[i].GetTitle}, Author: {_book[i].GetAuthor}, Available: {_book[i].GetAvailabilty}");
+                Console.WriteLine($"Member with ID {member.Id} already exists.");
+                return;
             }
-        }
 
-        public void AddMember(int id, string name)
-        {
-            _member[_membercount] = new Member(id, name);
-            _membercount++;
-            Console.WriteLine($"Member '{name}' added successfully.");
-        }
-
-        private int FindMemberIndex(int id)
-        {
-            for (int i = 0; i < _membercount; i++)
-                if (_member[i].id == id)
-                    return i;
-
-            return -1;
+            _member[_memberCount++] = member;
+            Console.WriteLine($"Member '{member.Name}' added successfully.");
         }
 
         public void RemoveMember(int id)
         {
             int index = FindMemberIndex(id);
+
             if (index == -1)
             {
                 Console.WriteLine("Member not found.");
                 return;
             }
 
-            for (int i = index; i < _membercount - 1; i++)
+            if (_member[index].BorrowedCount > 0)
             {
-                _member[i] = _member[i + 1];
+                Console.WriteLine("Member has borrowed books and can't be removed.");
+                return;
             }
 
-            _membercount--;
+            for (int i = index; i < _memberCount - 1; i++)
+                _member[i] = _member[i + 1];
+
+            _member[--_memberCount] = null;
             Console.WriteLine("Member removed successfully.");
         }
 
-        public void ListMember()
+        public void ListMembers()
         {
-            foreach (Member M in _member)
-            {
-                if (M != null)
-                {
-                Console.WriteLine($"Member ID {M.id} : {M.name} and has {M.BorrowedBooks} Books");
-                }
-            }
+            for (int i = 0; i < _memberCount; i++)
+                Console.WriteLine(_member[i]);
         }
 
-        public void BorrowBook(int bookid, int memberId)
+
+        // ================== BORROW / RETURN ==================
+
+        public void BorrowBook(int bookId, int memberId)
         {
-            Book book = FindBook(bookid);
+            Book book = FindBook(bookId);
             Member member = FindMember(memberId);
-            if (member == null || book == null)
+
+            if (book == null || member == null)
             {
                 Console.WriteLine("Book or Member not found.");
                 return;
             }
+
             if (!book.GetAvailabilty())
             {
                 Console.WriteLine("Book is not available.");
                 return;
             }
-            //member.BorrowedBooks[member] = book;
-            //member.BorrowedCount++;
 
-            //book.GetAvailabilty() = false;
-            Console.WriteLine($"{member.name} borrowed '{book.GetTitle}'.");
+          if(member.BorrowBook(book))
+            {
+                book.Borrow();
+            }
         }
-        public void ReturnBook(int bookid, int memberId)
+
+        public void ReturnBook(int bookId, int memberId)
         {
             Member member = FindMember(memberId);
+
             if (member == null)
             {
                 Console.WriteLine("Member not found.");
                 return;
             }
-            int index = -1;
-            for (int i = 0; i < member.BorrowedCount; i++)
+
+            Book book = FindBook(bookId);
+
+            if (book == null)
             {
-                if (member.BorrowedBooks[i].GetID() == bookid)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index == -1)
-            {
-                Console.WriteLine("This member didn't borrow this book.");
+                Console.WriteLine("Book not found.");
                 return;
             }
-            Book book = member.BorrowedBooks[index];
-          //  book = true;
 
-            for (int i = index; i < member.BorrowedCount - 1; i++)
+            if (member.ReturnBook(book))
             {
-                member.BorrowedBooks[i] = member.BorrowedBooks[i + 1];
-            }
 
-            member.BorrowedCount--;
-            Console.WriteLine($"{member.name} returned '{book.GetTitle}'.");
+                book.Return();
+            }
         }
 
+        // ================== HELPERS ==================
         private Book FindBook(int id)
         {
-            for (int i = 0; i < _bookcount; i++)
-                if (_book[i].GetID() == id)
-                    return _book[i];
+            for (int i = 0; i < _bookCount; i++)
+                if (_books[i].GetID() == id)
+                    return _books[i];
 
-            return null;
+            return null! ;
+        }
+
+
+        private int FindBookIndex(int id)
+        {
+            for (int i = 0; i < _bookCount; i++)
+                if (_books[i].GetID() == id)
+                    return i;
+
+            return -1;
         }
 
         private Member FindMember(int id)
         {
-            for (int i = 0; i < _membercount; i++)
-                if (_member[i].id == id)
+            for (int i = 0; i < _memberCount; i++)
+                if (_member[i].Id == id)
                     return _member[i];
 
-            return null;
+            return null!;
         }
 
+        private int FindMemberIndex(int id)
+        {
+            for (int i = 0; i < _memberCount; i++)
+                if (_member[i].Id == id)
+                    return i;
 
+            return -1;
+        }
 
     }
 }
