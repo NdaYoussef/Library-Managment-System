@@ -74,10 +74,13 @@ namespace Library_Managment_System
 
         public void AddMember(Member member)
         {
-            if (FindMember(member.Id) != null)
+            for (int i = 0; i < _memberCount; i++)
             {
-                Console.WriteLine($"Member with ID {member.Id} already exists.");
-                return;
+                if (_member[i].Id == member.Id )
+                {
+                    Console.WriteLine($"Member With ID {_member[i].Id} already Exists!");
+                    return;
+                }
             }
 
             _member[_memberCount++] = member;
@@ -96,7 +99,7 @@ namespace Library_Managment_System
 
             if (_member[index].BorrowedCount > 0)
             {
-                Console.WriteLine("Member has borrowed books and can't be removed.");
+                Console.WriteLine($"Member {_member[index].Name} has {_member[index].BorrowedCount} borrowed books and Can't be Removed !!!");
                 return;
             }
 
