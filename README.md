@@ -3,9 +3,9 @@
 ITI Full OOP project using C# – Console Application.
 
 ## Overview
-This project simulates a simple library management system. Users can:
+This project simulates a simple library management system. Admin can:
 - Add books and members
-- Borrow and return books
+- Make users Borrow and return books
 - View borrowed books and available books
 - View List of Members 
 
