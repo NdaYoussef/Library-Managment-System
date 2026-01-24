@@ -112,6 +112,11 @@ namespace Library_Managment_System
 
         public void ListMembers()
         {
+            if (_memberCount == 0)
+            {
+                Console.WriteLine("No Members in library !!!");
+                return;
+            }
             for (int i = 0; i < _memberCount; i++)
                 Console.WriteLine(_member[i]);
         }
