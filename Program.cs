@@ -1,4 +1,6 @@
-﻿    namespace Library_Managment_System
+﻿using System;
+
+namespace Library_Managment_System
 {
     internal class Program
     {
@@ -10,14 +12,14 @@
                 do
                 {
                     Console.Write(message);
-                    input = Console.ReadLine();
+                    input = Console.ReadLine()!;
 
                     if (string.IsNullOrWhiteSpace(input))
-                        Console.WriteLine("Input CanNot be Empty !!!");
+                        Console.WriteLine("Input Can Not be Empty !!!");
 
                 } while (string.IsNullOrWhiteSpace(input));
 
-                return input;
+                return input.Trim();
             }
 
             int ReadOnlyInt(string message)
@@ -25,35 +27,35 @@
                 int value;
                 string input;
 
-                do
+                while (true)
                 {
                     Console.Write(message);
-                    input = Console.ReadLine();
+                    input = Console.ReadLine()!;
 
                     if (string.IsNullOrWhiteSpace(input))
                     {
-                        Console.WriteLine("Input CanNot be Empty !!!");
+                        Console.WriteLine("Input Can Not be Empty !!!");
                         continue;
                     }
 
                     if (!int.TryParse(input, out value))
                     {
-                        Console.WriteLine("Please enter a valid Number !!!");
+                        Console.WriteLine("Please enter a valid number !!!");
                         continue;
                     }
 
                     return value;
-
-                } while (true);
+                }
             }
-            Console.WriteLine("Welcome to Library system!");
+
+            Console.WriteLine("Welcome to Library System!\n");
 
             Library library = new Library();
             string choice;
 
             do
             {
-                Console.WriteLine("\nLibrary Management System");
+                
                 Console.WriteLine("1. Add Book");
                 Console.WriteLine("2. Remove Book");
                 Console.WriteLine("3. Add Member");
@@ -65,8 +67,7 @@
                 Console.WriteLine("9. Exit");
 
                 Console.Write("Select option: ");
-                
-                choice = Console.ReadLine();
+                choice = Console.ReadLine()!;
 
                 switch (choice)
                 {
@@ -74,8 +75,9 @@
                         int bid = ReadOnlyInt("Book ID: ");
                         string title = ReadOnlyString("Title: ");
                         string author = ReadOnlyString("Author: ");
-                        library.AddBook(new Book(bid,title,author));
+                        library.AddBook(new Book(bid, title, author, true));
                         break;
+
 
                     case "2":
                         library.RemoveBook(ReadOnlyInt("Book ID: "));
@@ -84,7 +86,8 @@
                     case "3":
                         int mid = ReadOnlyInt("Member ID: ");
                         string name = ReadOnlyString("Name: ");
-                        library.AddMember(mid, name);
+                        int maxBooks = ReadOnlyInt("Max books allowed: ");
+                        library.AddMember(new Member(mid, name, maxBooks));
                         break;
 
                     case "4":
@@ -92,15 +95,15 @@
                         break;
 
                     case "5":
-                        int b1 = ReadOnlyInt("Book ID: ");
-                        int m1 = ReadOnlyInt("Member ID: ");
-                        library.BorrowBook(b1, m1);
+                        library.BorrowBook(
+                            ReadOnlyInt("Book ID: "),
+                            ReadOnlyInt("Member ID: "));
                         break;
 
                     case "6":
-                        int b2 = ReadOnlyInt("Book ID: ");
-                        int m2 = ReadOnlyInt("Member ID: ");
-                        library.ReturnBook(b2, m2);
+                        library.ReturnBook(
+                            ReadOnlyInt("Book ID: "),
+                            ReadOnlyInt("Member ID: "));
                         break;
 
                     case "7":
@@ -108,11 +111,11 @@
                         break;
 
                     case "8":
-                        library.ListMember();
+                        library.ListMembers();
                         break;
 
                     case "9":
-                        Console.WriteLine("Exit");
+                        Console.WriteLine("Goodbye ");
                         break;
 
                     default:
@@ -120,8 +123,31 @@
                         break;
                 }
 
-            } while (choice != "9" || choice == null);
+            } while (choice != "9");
         }
+
+
+       public static string ReadNonEmptyString(string message)
+        {
+            string input;
+            do
+            {
+                Console.Write(message);
+                input = Console.ReadLine() ?? "";
+
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    Console.WriteLine("Input cannot be empty, whitespace, or null! Please enter again.");
+                }
+
+            } while (string.IsNullOrWhiteSpace(input));
+
+            return input.Trim();
+        }
+
+      
+
 
     }
 }
+
