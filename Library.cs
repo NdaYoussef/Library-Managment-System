@@ -42,6 +42,7 @@ namespace Library_Managment_System
                 if (_book[i].Id == id)
                 {
                     index = i;
+                    break;
                 }
                 else
                 {
@@ -53,12 +54,21 @@ namespace Library_Managment_System
                 Console.WriteLine("Book not found.");
                 return;
             }
+            if (_book[index].IsAvailable == true && _book[index] != null)
+            {
             Console.WriteLine($"Book {_book[index].Title} removed successfully.");
             for (int i = index; i < _bookcount - 1; i++)
             {
                 _book[i] = _book[i + 1];
             }
             _bookcount--;
+                
+            }
+            else if (_book[index].IsAvailable == false)
+            {
+                Console.WriteLine("Book is already Borrowed !");
+                return;
+            }
         }
         public void ListBooks()
         {
@@ -115,7 +125,8 @@ namespace Library_Managment_System
                 }
                 else if (_member[i].BorrowedCount > 0)
                 {
-                    Console.WriteLine($"Member '{_member[i].Name}' has Borrowed books CanNot Remove !");
+                    Console.WriteLine($"Member '{_member[i].Name}' has  {_member[i].BorrowedCount} Borrowed book & Can't be Removed !!!");
+                    return;
                 }
             }
                 Console.WriteLine("Member not found.");
@@ -128,8 +139,16 @@ namespace Library_Managment_System
             {
                 if (M != null)
                 {
-                Console.WriteLine($"Member ID {M.Id} : {M.Name} and has {M.BorrowedCount} Books");
-                
+                Console.WriteLine($"Member ID {M.Id} : {M.Name} and has {M.BorrowedCount} Books ");
+                    foreach (Book i in M.BorrowedBooks)
+                    {
+                        if (i != null)
+                        {
+                        Console.WriteLine(i.Title);
+                            
+                        }
+                    }
+
                 }
             }
                
