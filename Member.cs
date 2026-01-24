@@ -9,72 +9,92 @@ namespace Library_Managment_System
 {
     internal class Member
     {
-        public int id;
-        public string name;
-        public Book[] BorrowedBooks;
-        private int borrowedCount;
+        private int _id;
+        private string _name;
+        private Book[] _borrowedBooks;
+        private int _borrowedCount;
 
 
+            public int Id
+            {
+                get { return _id; }
+                set { _id = value; }
+            }
 
-        public Member (int id,string name,int maxBooks)
+     
+            public string Name
+            {
+                get { return _name; }
+                set { _name = value; }
+            }
+
+            public int BorrowedCount
+            {
+                get { return _borrowedCount; }
+            }
+
+            public Book[] BorrowedBooks
+            {
+                get { return _borrowedBooks; }
+            }
+            public Member(int id, string name, int maxBooks)
         {
-            add
-            this.id = id;
-            this.name = name;
-            BorrowedBooks = new Book[maxBooks];
-            borrowedCount = 0;
+            _id = id;
+            _name = name;
+            _borrowedBooks = new Book[maxBooks];
+            _borrowedCount = 0;
         }
 
 
-        public void BorrowBook(Book book)
+        public bool BorrowBook(Book book)
         {
-            if (borrowedCount < BorrowedBooks.Length)
+            if (_borrowedCount >= _borrowedBooks.Length)
             {
-                BorrowedBooks[borrowedCount] = book;
-                borrowedCount++;
-
-                Console.WriteLine("book addded successfully");
+                Console.WriteLine("You passed the limit of books");
+                return false;
             }
 
-
-            Console.WriteLine("you passed limit book");
+            _borrowedBooks[_borrowedCount++] = book;
+            Console.WriteLine("Book borrowed successfully");
+            return true;
         }
 
         public bool ReturnBook(Book book)
         {
-            for (int i = 0; i < borrowedCount; i++)
+            for (int i = 0; i < _borrowedCount; i++)
             {
-                if (BorrowedBooks[i] == book)
+                if (_borrowedBooks[i].GetID() == book.GetID())
                 {
-                    for (int j = i; j < borrowedCount - 1; j++)
+                    for (int j = i; j < _borrowedCount - 1; j++)
                     {
-                        BorrowedBooks[j] = BorrowedBooks[j + 1];
+                        _borrowedBooks[j] = _borrowedBooks[j + 1];
                     }
 
-                    BorrowedBooks[borrowedCount - 1] = null;
-                    borrowedCount--;
-                    Console.WriteLine("book return successfully");
+                    _borrowedBooks[_borrowedCount - 1] = null;
+                    _borrowedCount--;
+
+                    Console.WriteLine("Book returned successfully");
+                    return true;
                 }
             }
 
-            Console.WriteLine("this book not found");
+            Console.WriteLine("This book not found");
+            return false;
         }
-
 
         public override string ToString()
         {
-           
-            string info = $"Member ID: {id}, Name: {name}\nBorrowed Books:\n";
+            string info = $"Member ID: {_id}, Name: {_name}\nBorrowed Books:\n ";
 
-            if (borrowedCount == 0)
+            if (_borrowedCount == 0)
             {
-                info += "no borrowed book yet";
+                info += "No borrowed books yet";
             }
             else
             {
-                for (int i = 0; i < borrowedCount; i++)
+                for (int i = 0; i < _borrowedCount; i++)
                 {
-                    info += $"- {BorrowedBooks[i].Title}\n";
+                    info += $"- {_borrowedBooks[i].GetTitle()}, {_borrowedBooks[i].GetID()}\n";
                 }
             }
 
